@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logs
+spec:
+  selector:
+    matchLabels:
+      app: logs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: logs
+    spec:
+      containers:
+      - name: master
+        image: gcr.io/datacenter-293401/logs-app:v1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 400Mi
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        - name: REDIS_HOST
+          value: redis
+        - name: RABBITMQ_HOST
+          value: rabbitmq
+        ports:
+        - containerPort: 7270
+---
+
